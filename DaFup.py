@@ -210,17 +210,17 @@ class MainWindow:
         client = BleakClient(self.DevSelected)
         try:
             await client.connect()
-        except Exception as e:
-            print(e)
+        except Exception:
             self.UpdateStatus("[ERROR] Can't connect to device.")
             self.upbutton.set_sensitive(True)
+            return
         
         # Check if device has a moyoung manufacture characteristic
         try:
             manfact = await client.read_gatt_char(MANCHAR)
-        except Exception as e:
-            print(e)
+        except Exception:
             self.UpdateStatus("[ERROR] It doesn't look a MOYOUNG-V2 compatible device.")
+            return
         
          # Check if device manufacture characteristic reads as a moyoung
         if (manfact.decode("utf-8") != "MOYOUNG-V2"):
@@ -233,7 +233,10 @@ class MainWindow:
             await client.start_notify(NTYCHAR, self.callback)
             
             # Open the file to send
-            fsize, flist = self.OpenFile(self.FileSelected)
+            try:
+                fsize, flist = self.OpenFile(self.FileSelected)
+            except Exception:
+                return
             
             # Background or watch face
             if (self.rback.get_active()):
@@ -290,7 +293,12 @@ class MainWindow:
     def OpenFile(self, filen=""):
         if (filen == ""): return
         # Open and divide the file in chunks
-        fo = open(filen, "rb")
+        try:
+            fo = open(filen, "rb")
+        except Exception:
+            self.UpdateStatus("[ERROR] Opening file.")
+            return
+            
         chunk = 512
         flist = []
         while (True):
