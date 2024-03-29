@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 '''
     DaFup watch face and background upload tool for Mo Young / Da Fit
