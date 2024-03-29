@@ -2,19 +2,17 @@
 
 DaFup is a watch face and background upload tool for Mo Young / Da Fit binary files.
 
-With that tool you can upload background and watch faces files in binary format to your MoYoung v2 watch.
+With that tool you can upload background and watch face files in binary format to your MoYoung v2 watch.
 
 **NOTE: This tool is in alpha stage, so expect some bugs.**
 
 ![DaFup](https://raw.githubusercontent.com/VicGuy/DaFup/master/Preview.png)
 
-## Usage
-
-#### Supported OS
+## Supported OS
 
 So far it supports Linux only.
 
-#### Dependencies
+## Dependencies
 
 - Python 3.x
 - [PyGObject](https://github.com/GNOME/pygobject)
@@ -25,6 +23,8 @@ Install them using your preferred method.
 In Arch Linux for example you can install through repositories:
 
     # pacman -S python-gobject python-bleak
+
+## Usage
 
 #### How to run
 
