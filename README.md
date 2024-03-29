@@ -6,6 +6,7 @@ With that tool you can upload background and watch faces files in binary format 
 
 **NOTE: This tool is in alpha stage, so expect some bugs.**
 
+![DaFup](https://raw.githubusercontent.com/VicGuy/DaFup/master/Preview.png)
 
 ## Usage
 
