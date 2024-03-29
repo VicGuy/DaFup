@@ -10,12 +10,12 @@ With that tool you can upload background and watch face files in binary format t
 
 ## Supported OS
 
-So far it supports Linux only.
+The tools were developed for Linux, however it may work on other OS if the dependencies are fulfilled. At least the CLI version may work (feedback needed).
 
 ## Dependencies
 
 - Python 3.x
-- [PyGObject](https://github.com/GNOME/pygobject)
+- [PyGObject](https://github.com/GNOME/pygobject) (Only for GUI version)
 - [bleak](https://github.com/hbldh/bleak)
 
 Install them using your preferred method.
@@ -26,7 +26,7 @@ In Arch Linux for example you can install through repositories:
 
 ## Usage
 
-#### How to run
+#### How to run (Linux)
 
 First the dependencies must be fulfilled, check them above.
 
@@ -34,7 +34,7 @@ In a command line, give the file execution permissions:
 
     $ chmod +x DaFup.py
 
-Then run it through command line or clicking directly on the file.
+Then since it has a shebang inside, you can run it through command line or clicking directly on the file.
 
     $ ./DaFup.py
 
