@@ -4,6 +4,8 @@ DaFup is a watch face and background upload tool for Mo Young / Da Fit binary fi
 
 With that tool you can upload background and watch face files in binary format to your MoYoung v2 watch.
 
+You can create your own watch faces with that [tool](https://github.com/david47k/extrathundertool) made by David Atkinson.
+
 **NOTE: This tool is in alpha stage, so expect some bugs.**
 
 ![DaFup](https://raw.githubusercontent.com/VicGuy/DaFup/master/Preview.png)
