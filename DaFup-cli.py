@@ -136,57 +136,54 @@ class DaFup:
             await client.disconnect()
             print ("[ERROR] It doesn't look a MOYOUNG-V2 compatible device.")
             return
+            
+        # Start notify system, self.callback() handle it
+        await client.start_notify(NTYCHAR, self.callback)
+            
+        # Open the file to send
+        fsize, flist = self.OpenFile(self.FileSelected)
+            
+        # Background or watch face
+        if (self.IsBackground):
+            cmd = self.cmdSendBackground(fsize)
         else:
+            cmd = self.cmdSendFace(fsize)
+        # Send start transfer command
+        await client.write_gatt_char(CTRCHAR, cmd, response=False)
+        await asyncio.sleep(0.5)
             
-            # Start notify system, self.callback() handle it
-            await client.start_notify(NTYCHAR, self.callback)
+        print ("Transferring...")
+        progress = 0
+        # Start transfer, while not get "feea200974ff"
+        while (self.NotifyData[0:6] != b"\xfe\xea\x20\x09\x74\xff"):
+            for i in range(0, len(flist)):
+                await client.write_gatt_char(SNDCHAR, flist[i], response=False)
+                progress += 100/len(flist)
+                print (str(int(progress)) + "%")
+                await asyncio.sleep(0.2)
+            break
+            #It will break after transfer complete. Need to find out how the
+            #checksum is made to then do a proper checksum comparison.
             
-            # Open the file to send
-            fsize, flist = self.OpenFile(self.FileSelected)
-            
-            # Background or watch face
-            if (self.IsBackground):
-                cmd = self.cmdSendBackground(fsize)
-            else:
-                cmd = self.cmdSendFace(fsize)
-            # Send start transfer command
+        # Send finish command
+        # Background or watch face
+        if (self.IsBackground):
+            cmd = self.cmdBackTransferFinish()
             await client.write_gatt_char(CTRCHAR, cmd, response=False)
-            await asyncio.sleep(0.5)
+            cmd = self.cmdSetBackTransfer()
+            await client.write_gatt_char(CTRCHAR, cmd, response=False)
+            cmd = self.cmdSetFace(1)
+            await client.write_gatt_char(CTRCHAR, cmd, response=False)
+        else:
+            cmd = self.cmdFaceTransferFinish()
+            await client.write_gatt_char(CTRCHAR, cmd, response=False)
+            cmd = self.cmdSetFaceTransfer()
+            await client.write_gatt_char(CTRCHAR, cmd, response=False)
+            cmd = self.cmdSetFace(6)
+            await client.write_gatt_char(CTRCHAR, cmd, response=False)
             
-            print ("Transferring...")
-            progress = 0
-            # Start transfer, while not get "feea200974ff"
-            while (self.NotifyData[0:6] != b"\xfe\xea\x20\x09\x74\xff"):
-                for i in range(0, len(flist)):
-                    await client.write_gatt_char(SNDCHAR, flist[i], response=False)
-                    #print (str(self.NotifyData[0:6])) #Debug
-                    #self.progress.set_fraction(self.progress.get_fraction() + (1/len(flist)))
-                    progress += 100/len(flist)
-                    print (str(int(progress)) + "%")
-                    await asyncio.sleep(0.2)
-                break
-                #It will break after transfer complete. Need to find out how the
-                #checksum is made to then do a proper checksum comparison.
-            
-            # Send finish command
-            # Background or watch face
-            if (self.IsBackground):
-                cmd = self.cmdBackTransferFinish()
-                await client.write_gatt_char(CTRCHAR, cmd, response=False)
-                cmd = self.cmdSetBackTransfer()
-                await client.write_gatt_char(CTRCHAR, cmd, response=False)
-                cmd = self.cmdSetFace(1)
-                await client.write_gatt_char(CTRCHAR, cmd, response=False)
-            else:
-                cmd = self.cmdFaceTransferFinish()
-                await client.write_gatt_char(CTRCHAR, cmd, response=False)
-                cmd = self.cmdSetFaceTransfer()
-                await client.write_gatt_char(CTRCHAR, cmd, response=False)
-                cmd = self.cmdSetFace(6)
-                await client.write_gatt_char(CTRCHAR, cmd, response=False)
-            
-            await client.disconnect()
-            print ("\nTransfer complete.")
+        await client.disconnect()
+        print ("\nTransfer complete.")
             
     ''' Function that handles service characteristic notification '''
     def callback(self, sender: BleakGATTCharacteristic, data: bytearray):
