@@ -53,7 +53,6 @@ class MainWindow:
     '''Set main window'''
     def SetMainWindow(self):
         self.window = Gtk.Window()
-        #self.window.set_decorated(False)
         self.window.set_size_request(800, 600)
         self.window.set_resizable(True)
         self.window.set_position(1)
