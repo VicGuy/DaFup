@@ -215,14 +215,14 @@ class MainWindow:
             self.upbutton.set_sensitive(True)
             return
         
-        # Check if device has a moyoung manufacture characteristic
+        # Check if device has a moyoung manufacturer characteristic
         try:
             manfact = await client.read_gatt_char(MANCHAR)
         except Exception:
             self.UpdateStatus("[ERROR] It doesn't look a MOYOUNG-V2 compatible device.")
             return
         
-         # Check if device manufacture characteristic reads as a moyoung
+         # Check if device manufacturer characteristic reads as a moyoung
         if (manfact.decode("utf-8") != "MOYOUNG-V2"):
             await client.disconnect()
             self.UpdateStatus("[ERROR] It doesn't look a MOYOUNG-V2 compatible device.")
@@ -253,7 +253,7 @@ class MainWindow:
             for i in range(0, len(flist)):
                 await client.write_gatt_char(SNDCHAR, flist[i], response=False)
                 self.progress.set_fraction(self.progress.get_fraction() + (1/len(flist)))
-                await asyncio.sleep(0.2)
+                await asyncio.sleep(0.3)
             break
             #It will break after transfer complete. Need to find out how the
             #checksum is made to then do a proper checksum comparison.

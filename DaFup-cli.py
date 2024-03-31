@@ -124,14 +124,14 @@ class DaFup:
             print ("[ERROR] Can't connect to device.")
             return
         
-        # Check if device has a moyoung manufacture characteristic
+        # Check if device has a moyoung manufacturer characteristic
         try:
             manfact = await client.read_gatt_char(MANCHAR)
         except:
             print ("[ERROR] It doesn't look a MOYOUNG-V2 compatible device.")
             return
         
-        # Check if device manufacture characteristic reads as a moyoung
+        # Check if device manufacturer characteristic reads as a moyoung
         if (manfact.decode("utf-8") != "MOYOUNG-V2"):
             await client.disconnect()
             print ("[ERROR] It doesn't look a MOYOUNG-V2 compatible device.")
@@ -160,7 +160,7 @@ class DaFup:
                 await client.write_gatt_char(SNDCHAR, flist[i], response=False)
                 progress += 100/len(flist)
                 print (str(int(progress)) + "%")
-                await asyncio.sleep(0.2)
+                await asyncio.sleep(0.3)
             break
             #It will break after transfer complete. Need to find out how the
             #checksum is made to then do a proper checksum comparison.
