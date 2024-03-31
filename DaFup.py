@@ -377,7 +377,12 @@ class MainWindow:
     def search_button(self):
         self.liststore.clear()
         i = 0
-        devices = asyncio.run(self.Discover())
+        try:
+            devices = asyncio.run(self.Discover())
+        except Exception:
+            self.UpdateStatus("[ERROR] Can't access Bluetooth.")
+            return
+            
         for x in devices:
             devlist = str(devices[x][0]).split(': ')
             self.liststore.append([devlist[0], devlist[1]])
