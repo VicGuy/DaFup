@@ -53,7 +53,7 @@ class MainWindow:
     '''Set main window'''
     def SetMainWindow(self):
         self.window = Gtk.Window()
-        self.window.set_decorated(False)
+        #self.window.set_decorated(False)
         self.window.set_size_request(800, 600)
         self.window.set_resizable(True)
         self.window.set_position(1)
@@ -74,11 +74,13 @@ class MainWindow:
         self.mbutton.set_popup(self.filemenu)
         self.mbutton.show()
         
-        ### Header ###
-        self.header = Gtk.HeaderBar()
-        self.header.pack_start(self.mbutton)
-        self.header.set_title("DaFup")
-        self.header.show()
+        ### Header bar ###
+        self.headerbar = Gtk.HeaderBar()
+        self.headerbar.set_show_close_button(True)
+        self.headerbar.props.title = "DaFup"
+        self.headerbar.show()
+        self.headerbar.pack_start(self.mbutton)
+        self.window.set_titlebar(self.headerbar)
         
         ### Liststore ###
         self.liststore = Gtk.ListStore(str, str)
@@ -158,7 +160,6 @@ class MainWindow:
                 
         #### Main BoxContainer ###
         self.MainContainer = Gtk.VBox()
-        self.MainContainer.pack_start(self.header, False, True, 0)
         self.MainContainer.pack_start(self.treeview, True, True, 2)
         self.MainContainer.pack_start(self.huseparator, False, False, 8)
         self.MainContainer.pack_start(self.FirstContainer, False, True, 0)
