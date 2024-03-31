@@ -274,7 +274,12 @@ class DaFup:
         
         self.liststore.clear()
         d = 0
-        devices = asyncio.run(self.Discover())
+        try:
+            devices = asyncio.run(self.Discover())
+        except Exception:
+            print ("[ERROR] Can't access Bluetooth.")
+            quit()
+            
         for x in devices:
             devlist = str(devices[x][0]).split(': ')
             self.liststore.append([devlist[0], devlist[1]])
